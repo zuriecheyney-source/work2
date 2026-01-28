@@ -9,12 +9,6 @@
 
 **基于大语言模型 (LLM) 与 LangGraph 的医疗分诊多智能体决策系统**
 
-[快速开始](#-快速开始) • [项目结构](#-项目结构) • [技术架构](#-技术架构) • [部署指南](#-部署指南)
-
-</div>
-
----
-
 > [!IMPORTANT]
 > **🚀 [部署访问地址 (Deployed on Streamlit Cloud)](https://medicaltriage-agent.streamlit.app/)**
 
