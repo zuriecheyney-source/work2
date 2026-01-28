@@ -1,0 +1,20 @@
+{
+    "medical_triage": {
+        "file_name": "../data/train.jsonl",
+        "formatting": "alpaca",
+        "columns": {
+            "prompt": "instruction",
+            "query": "input",
+            "response": "output"
+        }
+    },
+    "medical_triage_test": {
+        "file_name": "../data/test.jsonl",
+        "formatting": "alpaca",
+        "columns": {
+            "prompt": "instruction",
+            "query": "input",
+            "response": "output"
+        }
+    }
+}

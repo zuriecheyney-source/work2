@@ -1,0 +1,136 @@
+# ===================================================
+# 医疗分诊智能体系统 - Docker Compose 配置
+# ===================================================
+#
+# 服务列表:
+#   - backend:  FastAPI 后端 API (端口 8000)
+#   - frontend: Streamlit 前端 (端口 8501)
+#   - postgres: PostgreSQL 数据库 (端口 5432)
+#   - redis:    Redis 缓存 (端口 6379)
+#
+# 启动命令:
+#   docker-compose up -d
+#
+# 查看日志:
+#   docker-compose logs -f
+#
+# 停止服务:
+#   docker-compose down
+# ===================================================
+
+services:
+  # ===== 后端服务 =====
+  backend:
+    build:
+      context: ..
+      dockerfile: deployment/Dockerfile.backend
+    container_name: medical-agent-backend
+    env_file:
+      - ../.env
+    ports:
+      - "8000:8000"
+    environment:
+      # Langfuse 配置 (使用外部环境变量或 .env)
+      - LANGFUSE_ENABLED=${LANGFUSE_ENABLED:-false}
+      - LANGFUSE_PUBLIC_KEY=${LANGFUSE_PUBLIC_KEY:-}
+      - LANGFUSE_SECRET_KEY=${LANGFUSE_SECRET_KEY:-}
+      - LANGFUSE_HOST=${LANGFUSE_HOST:-https://cloud.langfuse.com}
+
+      # 数据库配置
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=medical_agent
+      - POSTGRES_USER=agent
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-agent123}
+
+      # Redis 配置
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - ../backend:/app/backend
+      - ../data:/app/data
+    networks:
+      - medical-network
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # ===== 前端服务 =====
+  frontend:
+    build:
+      context: ..
+      dockerfile: deployment/Dockerfile.frontend
+    container_name: medical-agent-frontend
+    ports:
+      - "8501:8501"
+    environment:
+      - BACKEND_URL=http://backend:8000
+    depends_on:
+      - backend
+    volumes:
+      - ../frontend:/app/frontend
+    networks:
+      - medical-network
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8501" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # ===== PostgreSQL 数据库 =====
+  postgres:
+    image: postgres:15-alpine
+    container_name: medical-agent-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=medical_agent
+      - POSTGRES_USER=agent
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-agent123}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - medical-network
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U agent -d medical_agent" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ===== Redis 缓存 =====
+  redis:
+    image: redis:7-alpine
+    container_name: medical-agent-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - medical-network
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    command: redis-server --appendonly yes
+
+# ===== 网络 =====
+networks:
+  medical-network:
+    driver: bridge
+
+# ===== 数据卷 =====
+volumes:
+  postgres_data:
+  redis_data:

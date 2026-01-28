@@ -1,0 +1,333 @@
+[
+    {
+        "id": "eval_001",
+        "category": "心血管",
+        "difficulty": "medium",
+        "input": "我今年55岁，男性，最近一周经常感觉胸闷，特别是爬楼梯的时候加重，休息后能缓解。有高血压病史5年。",
+        "expected_department": [
+            "心血管内科"
+        ],
+        "expected_urgency_level": "urgent",
+        "key_points": [
+            "冠心病",
+            "心绞痛",
+            "劳累诱发",
+            "高血压病史"
+        ]
+    },
+    {
+        "id": "eval_002",
+        "category": "急诊",
+        "difficulty": "high",
+        "input": "我父亲刚才突然说不出话来，右边手脚也动不了，已经持续20分钟了。",
+        "expected_department": [
+            "急诊科",
+            "神经内科"
+        ],
+        "expected_urgency_level": "immediate",
+        "key_points": [
+            "脑卒中",
+            "突发",
+            "肢体无力",
+            "言语障碍",
+            "立即就医"
+        ]
+    },
+    {
+        "id": "eval_003",
+        "category": "呼吸",
+        "difficulty": "low",
+        "input": "最近感冒了，鼻塞流涕，有点咳嗽，低烧37.5度，已经3天了。",
+        "expected_department": [
+            "呼吸内科"
+        ],
+        "expected_urgency_level": "routine",
+        "key_points": [
+            "上呼吸道感染",
+            "对症治疗",
+            "多休息"
+        ]
+    },
+    {
+        "id": "eval_004",
+        "category": "消化",
+        "difficulty": "medium",
+        "input": "昨天吃了海鲜后，今天开始拉肚子，已经拉了5次了，还有些恶心想吐，低烧。",
+        "expected_department": [
+            "消化内科"
+        ],
+        "expected_urgency_level": "soon",
+        "key_points": [
+            "急性胃肠炎",
+            "不洁饮食",
+            "补液",
+            "防脱水"
+        ]
+    },
+    {
+        "id": "eval_005",
+        "category": "骨科",
+        "difficulty": "high",
+        "input": "刚才打篮球摔倒了，左脚踝肿了很大一块，不能着地，疼得厉害。",
+        "expected_department": [
+            "骨科"
+        ],
+        "expected_urgency_level": "urgent",
+        "key_points": [
+            "骨折可能",
+            "踝关节",
+            "制动",
+            "X线检查"
+        ]
+    },
+    {
+        "id": "eval_006",
+        "category": "神经",
+        "difficulty": "medium",
+        "input": "我最近一个月经常头痛，主要是太阳穴那里跳着痛，有时候还想吐，怕光怕吵。",
+        "expected_department": [
+            "神经内科"
+        ],
+        "expected_urgency_level": "soon",
+        "key_points": [
+            "偏头痛",
+            "搏动性",
+            "畏光畏声",
+            "规律作息"
+        ]
+    },
+    {
+        "id": "eval_007",
+        "category": "儿科",
+        "difficulty": "medium",
+        "input": "我家宝宝3岁，今天发烧39度，手心脚心有红疹子，嘴巴里也有小水泡，不肯吃东西。",
+        "expected_department": [
+            "儿科"
+        ],
+        "expected_urgency_level": "urgent",
+        "key_points": [
+            "手足口病",
+            "隔离",
+            "观察精神状态",
+            "口腔护理"
+        ]
+    },
+    {
+        "id": "eval_008",
+        "category": "妇科",
+        "difficulty": "high",
+        "input": "我月经推迟了2周，今天突然下腹剧痛，有少量阴道出血，感觉头晕。",
+        "expected_department": [
+            "妇科",
+            "急诊科"
+        ],
+        "expected_urgency_level": "immediate",
+        "key_points": [
+            "异位妊娠",
+            "停经",
+            "腹痛",
+            "阴道流血",
+            "紧急"
+        ]
+    },
+    {
+        "id": "eval_009",
+        "category": "皮肤",
+        "difficulty": "low",
+        "input": "最近皮肤起了很多红疹子，特别痒，风团一样一块一块的，过一会儿又消了。",
+        "expected_department": [
+            "皮肤科"
+        ],
+        "expected_urgency_level": "routine",
+        "key_points": [
+            "荨麻疹",
+            "过敏",
+            "避免过敏原",
+            "抗过敏药"
+        ]
+    },
+    {
+        "id": "eval_010",
+        "category": "五官",
+        "difficulty": "medium",
+        "input": "右边耳朵痛了2天，今天开始流脓了，还有点发烧，听力也下降了。",
+        "expected_department": [
+            "耳鼻喉科",
+            "五官科"
+        ],
+        "expected_urgency_level": "urgent",
+        "key_points": [
+            "中耳炎",
+            "化脓性",
+            "抗感染",
+            "听力检查"
+        ]
+    },
+    {
+        "id": "eval_011",
+        "category": "心血管",
+        "difficulty": "high",
+        "input": "我现在胸口剧烈疼痛，像被石头压住一样，已经持续半小时了，浑身大汗，感觉要死了。",
+        "expected_department": [
+            "急诊科",
+            "心血管内科"
+        ],
+        "expected_urgency_level": "immediate",
+        "key_points": [
+            "急性心肌梗死",
+            "剧烈胸痛",
+            "濒死感",
+            "大汗",
+            "立即120"
+        ]
+    },
+    {
+        "id": "eval_012",
+        "category": "消化",
+        "difficulty": "medium",
+        "input": "最近一个月经常胃痛，饭后加重，有时候反酸嗳气，大便发黑。",
+        "expected_department": [
+            "消化内科"
+        ],
+        "expected_urgency_level": "urgent",
+        "key_points": [
+            "胃溃疡",
+            "消化道出血",
+            "黑便",
+            "胃镜检查"
+        ]
+    },
+    {
+        "id": "eval_013",
+        "category": "骨科",
+        "difficulty": "medium",
+        "input": "我腰痛已经很久了，最近右腿也开始麻木疼痛，从屁股一直到小腿，弯腰时加重。",
+        "expected_department": [
+            "骨科",
+            "神经外科"
+        ],
+        "expected_urgency_level": "soon",
+        "key_points": [
+            "腰椎间盘突出",
+            "坐骨神经痛",
+            "放射痛",
+            "MRI检查"
+        ]
+    },
+    {
+        "id": "eval_014",
+        "category": "呼吸",
+        "difficulty": "high",
+        "input": "我有哮喘病史，今天突然喘不上来气，用了喷雾剂也不管用，说话都困难。",
+        "expected_department": [
+            "急诊科",
+            "呼吸内科"
+        ],
+        "expected_urgency_level": "immediate",
+        "key_points": [
+            "哮喘急性发作",
+            "呼吸困难",
+            "喷雾无效",
+            "紧急就医"
+        ]
+    },
+    {
+        "id": "eval_015",
+        "category": "皮肤",
+        "difficulty": "medium",
+        "input": "腰部一侧起了一片水泡，沿着一条线分布，特别疼，像针扎一样。",
+        "expected_department": [
+            "皮肤科"
+        ],
+        "expected_urgency_level": "urgent",
+        "key_points": [
+            "带状疱疹",
+            "沿神经分布",
+            "疼痛",
+            "早期抗病毒"
+        ]
+    },
+    {
+        "id": "eval_016",
+        "category": "神经",
+        "difficulty": "high",
+        "input": "我今天突然头痛欲裂，从来没这么痛过，还呕吐了两次，脖子发硬。",
+        "expected_department": [
+            "急诊科",
+            "神经内科"
+        ],
+        "expected_urgency_level": "immediate",
+        "key_points": [
+            "蛛网膜下腔出血",
+            "雷击样头痛",
+            "脑膜刺激征",
+            "紧急"
+        ]
+    },
+    {
+        "id": "eval_017",
+        "category": "消化",
+        "difficulty": "medium",
+        "input": "右上腹痛，吃油腻食物后加重，疼痛放射到右肩背部，有点恶心。",
+        "expected_department": [
+            "消化内科",
+            "肝胆外科"
+        ],
+        "expected_urgency_level": "urgent",
+        "key_points": [
+            "胆囊炎",
+            "胆绞痛",
+            "厌油腻",
+            "B超检查"
+        ]
+    },
+    {
+        "id": "eval_018",
+        "category": "儿科",
+        "difficulty": "low",
+        "input": "宝宝6个月大，今天拉了3次稀便，有点蛋花汤样，精神还可以，能吃能睡。",
+        "expected_department": [
+            "儿科"
+        ],
+        "expected_urgency_level": "routine",
+        "key_points": [
+            "婴儿腹泻",
+            "轮状病毒",
+            "补液",
+            "继续喂养"
+        ]
+    },
+    {
+        "id": "eval_019",
+        "category": "五官",
+        "difficulty": "low",
+        "input": "最近老是打喷嚏、流清鼻涕、鼻子痒，眼睛也痒，每年春天都这样。",
+        "expected_department": [
+            "耳鼻喉科",
+            "五官科"
+        ],
+        "expected_urgency_level": "routine",
+        "key_points": [
+            "过敏性鼻炎",
+            "季节性",
+            "避免花粉",
+            "抗过敏治疗"
+        ]
+    },
+    {
+        "id": "eval_020",
+        "category": "急诊",
+        "difficulty": "high",
+        "input": "我吃了头孢后全身起皮疹，嘴唇肿了，感觉喉咙发紧，呼吸有点费劲。",
+        "expected_department": [
+            "急诊科"
+        ],
+        "expected_urgency_level": "immediate",
+        "key_points": [
+            "过敏性休克",
+            "药物过敏",
+            "喉头水肿",
+            "紧急抢救"
+        ]
+    }
+]

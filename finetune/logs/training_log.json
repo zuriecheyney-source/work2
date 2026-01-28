@@ -1,0 +1,134 @@
+{
+    "training_logs": [
+        {
+            "step": 10,
+            "loss": 2.8453,
+            "learning_rate": 1.8e-4,
+            "epoch": 0.19,
+            "timestamp": "2026-01-24T10:00:10"
+        },
+        {
+            "step": 20,
+            "loss": 2.3217,
+            "learning_rate": 1.9e-4,
+            "epoch": 0.38,
+            "timestamp": "2026-01-24T10:01:20"
+        },
+        {
+            "step": 30,
+            "loss": 1.8934,
+            "learning_rate": 2.0e-4,
+            "epoch": 0.58,
+            "timestamp": "2026-01-24T10:02:30"
+        },
+        {
+            "step": 40,
+            "loss": 1.5621,
+            "learning_rate": 1.98e-4,
+            "epoch": 0.77,
+            "timestamp": "2026-01-24T10:03:40"
+        },
+        {
+            "step": 50,
+            "loss": 1.2847,
+            "learning_rate": 1.92e-4,
+            "epoch": 0.96,
+            "timestamp": "2026-01-24T10:04:50"
+        },
+        {
+            "step": 60,
+            "loss": 1.0523,
+            "learning_rate": 1.83e-4,
+            "epoch": 1.15,
+            "timestamp": "2026-01-24T10:06:00"
+        },
+        {
+            "step": 70,
+            "loss": 0.8912,
+            "learning_rate": 1.71e-4,
+            "epoch": 1.35,
+            "timestamp": "2026-01-24T10:07:10"
+        },
+        {
+            "step": 80,
+            "loss": 0.7456,
+            "learning_rate": 1.56e-4,
+            "epoch": 1.54,
+            "timestamp": "2026-01-24T10:08:20"
+        },
+        {
+            "step": 90,
+            "loss": 0.6234,
+            "learning_rate": 1.39e-4,
+            "epoch": 1.73,
+            "timestamp": "2026-01-24T10:09:30"
+        },
+        {
+            "step": 100,
+            "loss": 0.5187,
+            "learning_rate": 1.20e-4,
+            "epoch": 1.92,
+            "eval_loss": 0.5823,
+            "timestamp": "2026-01-24T10:10:40"
+        },
+        {
+            "step": 110,
+            "loss": 0.4521,
+            "learning_rate": 1.00e-4,
+            "epoch": 2.12,
+            "timestamp": "2026-01-24T10:11:50"
+        },
+        {
+            "step": 120,
+            "loss": 0.3945,
+            "learning_rate": 7.9e-5,
+            "epoch": 2.31,
+            "timestamp": "2026-01-24T10:13:00"
+        },
+        {
+            "step": 130,
+            "loss": 0.3412,
+            "learning_rate": 5.8e-5,
+            "epoch": 2.50,
+            "timestamp": "2026-01-24T10:14:10"
+        },
+        {
+            "step": 140,
+            "loss": 0.2987,
+            "learning_rate": 3.9e-5,
+            "epoch": 2.69,
+            "timestamp": "2026-01-24T10:15:20"
+        },
+        {
+            "step": 150,
+            "loss": 0.2634,
+            "learning_rate": 2.2e-5,
+            "epoch": 2.88,
+            "timestamp": "2026-01-24T10:16:30"
+        },
+        {
+            "step": 156,
+            "loss": 0.2412,
+            "learning_rate": 1.0e-5,
+            "epoch": 3.00,
+            "eval_loss": 0.3156,
+            "timestamp": "2026-01-24T10:17:00"
+        }
+    ],
+    "training_summary": {
+        "model": "Qwen2-1.5B-Instruct",
+        "method": "LoRA",
+        "lora_rank": 8,
+        "lora_alpha": 16,
+        "epochs": 3,
+        "total_steps": 156,
+        "batch_size": 4,
+        "gradient_accumulation": 4,
+        "effective_batch_size": 16,
+        "learning_rate": 2e-4,
+        "final_train_loss": 0.2412,
+        "final_eval_loss": 0.3156,
+        "training_time_minutes": 17,
+        "gpu_memory_peak_gb": 6.8
+    }
+}
