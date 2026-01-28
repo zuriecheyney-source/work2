@@ -114,7 +114,7 @@ work2/
 ├── requirements.txt              # Python 依赖
 ├── .env.example                  # 环境变量模板
 │
-├── data/                         # Part 1: 数据构建 (25%)
+├── data/                         # Part 1: 数据构建
 │   ├── README.md                 # 数据生成方法论与格式说明
 │   ├── train.jsonl               # 训练集 (基于 Alpaca 格式，涵盖 950+ 案例)
 │   ├── test.jsonl                # 测试集 (用于自动分诊评估)
@@ -124,14 +124,14 @@ work2/
 ├── scripts/                      # 自动化工具
 │   └── generate_data.py          # 模拟医生诊断逻辑的数据生成器
 │
-├── finetune/                     # Part 2: 模型微调 (25%)
+├── finetune/                     # Part 2: 模型微调
 │   ├── sft_config.yaml           # LlamaFactory 训练超参数配置
 │   ├── train.ps1                 # Windows 环境自动化训练脚本
 │   ├── verify.ps1                # 交互式模型验证工具
 │   ├── dataset_info.json         # 数据集映射注册表
 │   └── saves/                    # LoRA 权重与 Checkpoints
 │
-├── evaluation/                   # Part 3: 效果评估 (15%)
+├── evaluation/                   # Part 3: 效果评估
 │   ├── eval_cases.json           # 评估用例
 │   ├── eval_script.py            # 自动评估脚本
 │   └── evaluation_report.md      # 评估报告
