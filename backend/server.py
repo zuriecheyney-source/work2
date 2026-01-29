@@ -253,9 +253,16 @@ async def run_triage_task(task_id: str, patient_input: str, patient_id: str = "d
 
 # ===== API 端点 =====
 
+@app.get("/", tags=["系统"])
+async def root():
+    """根路径，用于 Railway 默认健康检查"""
+    return {"message": "医疗分诊 API 正在运行", "status": "healthy"}
+
+
 @app.get("/health", response_model=HealthResponse, tags=["系统"])
 async def health_check():
     """健康检查"""
+    print(f"[{datetime.now().isoformat()}] 收到诊断请求")
     return HealthResponse(
         status="healthy",
         version="1.0.0",
@@ -630,10 +637,20 @@ async def search_patient_profiles(query: str = Query(..., min_length=1, descript
 
 if __name__ == "__main__":
     import uvicorn
+    import os
+    
+    # 强制从环境变量读取端口，确保与 Railway 绑定一致
+    port = int(os.getenv("PORT", 8080))
+    host = "0.0.0.0"
+    
+    print(f"🚀 启动生产级服务器: {host}:{port}")
     
     uvicorn.run(
         app,
-        host=settings.backend_host,
-        port=settings.backend_port,
+        host=host,
+        port=port,
+        proxy_headers=True,
+        forwarded_allow_ips="*",
+        access_log=True,
         reload=False
     )
