@@ -86,15 +86,6 @@ async def lifespan(app: FastAPI):
             open=False # 延迟打开，方便捕获连接错误
         )
         
-<<<<<<< HEAD
-        # 尝试短暂连接以验证
-        print(f"尝试连接数据库: {settings.database_url.split('@')[-1]}")
-        await pool.open()
-        
-        checkpointer = AsyncPostgresSaver(pool)
-        # 自动创建必要的表
-        await checkpointer.setup()
-=======
         # 尝试短暂连接以验证 (502 修复：增加超时)
         print(f"尝试连接数据库: {settings.database_url.split('@')[-1]}")
         try:
@@ -105,7 +96,6 @@ async def lifespan(app: FastAPI):
         checkpointer = AsyncPostgresSaver(pool)
         # 自动创建必要的表
         await asyncio.wait_for(checkpointer.setup(), timeout=3.0)
->>>>>>> 18f67e5 (update)
         print("✅ 数据库 Checkpointer 初始化成功")
     except Exception as e:
         print(f"⚠️ 数据库连接失败, 切换到内存模式: {e}")
