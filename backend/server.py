@@ -130,11 +130,18 @@ app = FastAPI(
 # CORS 配置
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # 生产环境应限制
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# 请求日志中间件
+@app.middleware("http")
+async def add_process_time_header(request, call_next):
+    print(f"[{datetime.now().isoformat()}] 🛸 收到请求: {request.method} {request.url.path}")
+    response = await call_next(request)
+    return response
 
 
 # ===== 后台任务 =====
