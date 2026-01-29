@@ -63,7 +63,7 @@ class Settings(BaseSettings):
     
     # ===== 服务配置 =====
     backend_host: str = "0.0.0.0"
-    backend_port: int = 8000
+    backend_port: int = Field(default=8000, alias=AliasChoices("PORT", "BACKEND_PORT"))
     frontend_port: int = 8501
     
     @computed_field
