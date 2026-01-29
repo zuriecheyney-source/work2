@@ -30,13 +30,13 @@ class Settings(BaseSettings):
     """应用配置"""
     
     # 核心 API 配置
-    deepseek_api_key: str = Field(default="", alias=AliasChoices("DEEPSEEK_API_KEY", "DEEPSEEK_KEY"))
-    deepseek_base_url: str = Field(default="https://api.deepseek.com/v1", alias=AliasChoices("DEEPSEEK_BASE_URL", "DEEPSEEK_URL"))
-    deepseek_model: str = Field(default="deepseek-chat", alias=AliasChoices("DEEPSEEK_MODEL"))
+    deepseek_api_key: str = Field(default="", validation_alias=AliasChoices("DEEPSEEK_API_KEY", "DEEPSEEK_KEY"))
+    deepseek_base_url: str = Field(default="https://api.deepseek.com/v1", validation_alias=AliasChoices("DEEPSEEK_BASE_URL", "DEEPSEEK_URL"))
+    deepseek_model: str = Field(default="deepseek-chat", validation_alias=AliasChoices("DEEPSEEK_MODEL"))
     
-    openai_api_key: str = Field(default="", alias=AliasChoices("OPENAI_API_KEY", "OPENAI_KEY"))
-    openai_base_url: str = Field(default="https://api.openai.com/v1", alias=AliasChoices("OPENAI_BASE_URL", "OPENAI_URL"))
-    openai_model: str = Field(default="gpt-4o-mini", alias=AliasChoices("OPENAI_MODEL"))
+    openai_api_key: str = Field(default="", validation_alias=AliasChoices("OPENAI_API_KEY", "OPENAI_KEY"))
+    openai_base_url: str = Field(default="https://api.openai.com/v1", validation_alias=AliasChoices("OPENAI_BASE_URL", "OPENAI_URL"))
+    openai_model: str = Field(default="gpt-4o-mini", validation_alias=AliasChoices("OPENAI_MODEL"))
 
     # ===== 微调模型配置 =====
     use_local_model: bool = False
@@ -130,14 +130,23 @@ class Settings(BaseSettings):
 @lru_cache()
 def get_settings() -> Settings:
     """获取配置单例"""
+    # 在实例化前，先诊断一下系统的环境变量
+    print("\n--- [ENV DIAGNOSTICS] ---")
+    relevant_keys = [k for k in os.environ.keys() if any(x in k for x in ["KEY", "URL", "MODEL", "PORT", "DB", "POSTGRES"])]
+    print(f"环境中有 {len(relevant_keys)} 个相关变量: {sorted(relevant_keys)}")
+    
     s = Settings()
     
+    # 强制二次兜底：如果 Pydantic 没读到，手动尝试 os.getenv
+    if not s.deepseek_api_key: s.deepseek_api_key = os.getenv("DEEPSEEK_API_KEY") or os.getenv("DEEPSEEK_KEY") or ""
+    if not s.openai_api_key: s.openai_api_key = os.getenv("OPENAI_API_KEY") or os.getenv("OPENAI_KEY") or ""
+    
     # 启动时诊断日志
-    print(f"\n[CONFIG] 加载配置文件: {ENV_FILE if ENV_FILE.exists() else '未找到'}")
+    print(f"[CONFIG] 加载配置文件: {ENV_FILE if ENV_FILE.exists() else '未找到'}")
     print(f"[CONFIG] 当前模型: {s.llm_model}")
     print(f"[CONFIG] Base URL: {s.llm_base_url}")
     
-    # 获取真正的密钥（考虑计算属性）
+    # 获取真正的密钥
     final_key = s.llm_api_key
     if final_key and len(final_key) > 5:
         masked_key = f"{final_key[:6]}...{final_key[-4:]}"
@@ -145,12 +154,8 @@ def get_settings() -> Settings:
         masked_key = "❌ 未配置"
         
     print(f"[CONFIG] 最终 API Key: {masked_key}")
-    print(f"[CONFIG] Langfuse: {'启用' if s.langfuse_enabled else '禁用'}\n")
-    
-    # 额外诊断环境
-    if not final_key:
-        print("⚠️ 警告: 无法在环境变量中找到 DEEPSEEK_API_KEY 或 OPENAI_API_KEY。")
-        print(f"DEBUG: deepseek_api_key={bool(s.deepseek_api_key)}, openai_api_key={bool(s.openai_api_key)}")
+    print(f"[CONFIG] Langfuse: {'启用' if s.langfuse_enabled else '禁用'}")
+    print("--- [END DIAGNOSTICS] ---\n")
     
     return s
 
