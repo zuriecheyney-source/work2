@@ -54,6 +54,7 @@ class Settings(BaseSettings):
     postgres_db: str = "medical_agent"
     postgres_user: str = "agent"
     postgres_password: str = "agent123"
+    database_url_env: Optional[str] = Field(default=None, alias=AliasChoices("DATABASE_URL", "POSTGRES_URL"))
     
     # ===== Redis 配置 =====
     redis_host: str = "localhost"
@@ -104,6 +105,8 @@ class Settings(BaseSettings):
     @property
     def database_url(self) -> str:
         """PostgreSQL 连接 URL"""
+        if self.database_url_env:
+            return self.database_url_env
         return (
             f"postgresql://{self.postgres_user}:{self.postgres_password}"
             f"@{self.postgres_host}:{self.postgres_port}/{self.postgres_db}"
