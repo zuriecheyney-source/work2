@@ -25,7 +25,17 @@ import uuid
 # ===== 配置 =====
 
 # 后端 API 地址
-BACKEND_URL = os.getenv("BACKEND_URL", "http://localhost:8000")
+# 后端 API 地址 (支持 Streamlit Secrets 和 环境变量)
+def get_backend_url():
+    url = os.getenv("BACKEND_URL")
+    try:
+        if "BACKEND_URL" in st.secrets:
+            url = st.secrets["BACKEND_URL"]
+    except Exception:
+        pass
+    return (url or "http://localhost:8000").rstrip("/")
+
+BACKEND_URL = get_backend_url()
 
 import streamlit.components.v1 as components
 
@@ -597,7 +607,23 @@ if "require_approval" not in st.session_state:
 curr_id = st.session_state.current_session_id
 curr_session = st.session_state.sessions[curr_id]
 
-# ===== 侧边栏 (简洁版) =====
+# --- 开发者诊断工具 (Developer Diagnostics) ---
+with st.sidebar.expander("🛠️ 部署诊断工具", expanded=False):
+    st.caption(f"当前后端地址: `{BACKEND_URL}`")
+    if st.button("🔍 测试后端连接 (Health Check)"):
+        try:
+            res = requests.get(f"{BACKEND_URL}/health", timeout=5)
+            if res.status_code == 200:
+                st.success(f"连接成功! (Status: {res.status_code})")
+                st.json(res.json())
+            else:
+                st.error(f"连接失败 (Status: {res.status_code})")
+                st.text(res.text)
+        except Exception as e:
+            st.error(f"请求异常: {str(e)}")
+            st.info("💡 提示: 请检查 Streamlit Secrets 中的 BACKEND_URL 是否正确填写了 Railway 的公网域名 (需带 https://)")
+
+st.sidebar.markdown("---")
 
 with st.sidebar:
     # --- 1. 品牌展示 (Header) ---
