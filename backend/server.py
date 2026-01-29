@@ -640,8 +640,8 @@ if __name__ == "__main__":
     import uvicorn
     
     uvicorn.run(
-        "server:app",
+        "backend.server:app",
         host=settings.backend_host,
         port=settings.backend_port,
-        reload=True
+        reload=False
     )
