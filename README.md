@@ -10,7 +10,6 @@
 **基于大语言模型 (LLM) 与 LangGraph 的医疗分诊多智能体决策系统**
 
 > [!IMPORTANT]
-> **🚀 [部署访问地址 (Deployed on Streamlit Cloud)](https://medicaltriage-agent.streamlit.app/)**
 
 [快速开始](#-快速开始) • [项目结构](#-项目结构) • [技术架构](#-技术架构) • [部署指南](#-部署指南)
 
@@ -84,27 +83,9 @@ cp .env.example .env
 - `USE_LOCAL_MODEL`: 若设置为 `true`，系统将尝试加载本地微调模型权重。
 - `LANGFUSE_*`: (可选) 用于全链路日志追踪与性能审计。
 
-### 4. 生产环境部署 (方案 B: 云端前后端分离)
-如果您想将项目正式上线：
 
-**第 1 步：部署后端 API (推荐 Render/Zeabur/Railway)**
-1. 将项目推送到 GitHub。
-2. 在部署平台创建一个新的 **Web Service**。
-3. **Build Command**: `pip install -r requirements.txt`
-4. **Start Command**: `uvicorn backend.server:app --host 0.0.0.0 --port $PORT`
-5. 记录下平台分配的 URL (例如 `https://my-medical-api.zeabur.app`)。
 
-**第 2 步：部署前端到 Streamlit Cloud**
-1. 在 Streamlit Cloud 关联您的 GitHub 仓库。
-2. **Main file path**: 填写 `frontend/app.py`。
-3. **Advanced Settings -> Secrets**: 填入后端地址：
-   ```toml
-   BACKEND_URL = "https://您的后端API地址"
-   ```
-
----
-
-### 5. 访问服务
+### 4. 访问服务
 - 前端界面: http://localhost:8501
 - API文档: http://localhost:8000/docs
 - Langfuse追踪: https://cloud.langfuse.com (需配置)
