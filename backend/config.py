@@ -29,14 +29,14 @@ else:
 class Settings(BaseSettings):
     """应用配置"""
     
-    # 原始变量 (不带任何别名，直接映射)
-    deepseek_api_key: str = ""
-    deepseek_base_url: str = "https://api.deepseek.com/v1"
-    deepseek_model: str = "deepseek-chat"
+    # 核心 API 配置
+    deepseek_api_key: str = Field(default="", alias=AliasChoices("DEEPSEEK_API_KEY", "DEEPSEEK_KEY"))
+    deepseek_base_url: str = Field(default="https://api.deepseek.com/v1", alias=AliasChoices("DEEPSEEK_BASE_URL", "DEEPSEEK_URL"))
+    deepseek_model: str = Field(default="deepseek-chat", alias=AliasChoices("DEEPSEEK_MODEL"))
     
-    openai_api_key: str = ""
-    openai_base_url: str = "https://api.openai.com/v1"
-    openai_model: str = "gpt-4o-mini"
+    openai_api_key: str = Field(default="", alias=AliasChoices("OPENAI_API_KEY", "OPENAI_KEY"))
+    openai_base_url: str = Field(default="https://api.openai.com/v1", alias=AliasChoices("OPENAI_BASE_URL", "OPENAI_URL"))
+    openai_model: str = Field(default="gpt-4o-mini", alias=AliasChoices("OPENAI_MODEL"))
 
     # ===== 微调模型配置 =====
     use_local_model: bool = False
@@ -136,9 +136,21 @@ def get_settings() -> Settings:
     print(f"\n[CONFIG] 加载配置文件: {ENV_FILE if ENV_FILE.exists() else '未找到'}")
     print(f"[CONFIG] 当前模型: {s.llm_model}")
     print(f"[CONFIG] Base URL: {s.llm_base_url}")
-    masked_key = f"{s.llm_api_key[:6]}...{s.llm_api_key[-4:]}" if len(s.llm_api_key) > 10 else "未配置"
-    print(f"[CONFIG] API Key: {masked_key}")
+    
+    # 获取真正的密钥（考虑计算属性）
+    final_key = s.llm_api_key
+    if final_key and len(final_key) > 5:
+        masked_key = f"{final_key[:6]}...{final_key[-4:]}"
+    else:
+        masked_key = "❌ 未配置"
+        
+    print(f"[CONFIG] 最终 API Key: {masked_key}")
     print(f"[CONFIG] Langfuse: {'启用' if s.langfuse_enabled else '禁用'}\n")
+    
+    # 额外诊断环境
+    if not final_key:
+        print("⚠️ 警告: 无法在环境变量中找到 DEEPSEEK_API_KEY 或 OPENAI_API_KEY。")
+        print(f"DEBUG: deepseek_api_key={bool(s.deepseek_api_key)}, openai_api_key={bool(s.openai_api_key)}")
     
     return s
 
