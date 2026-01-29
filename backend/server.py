@@ -74,34 +74,36 @@ async def lifespan(app: FastAPI):
     print("=" * 50)
     
     # 1. 初始化数据库及 Checkpointer
-    try:
-        connection_kwargs = {
-            "autocommit": True,
-            "prepare_threshold": 0,
-        }
-        pool = AsyncConnectionPool(
-            conninfo=settings.database_url,
-            max_size=20,
-            kwargs=connection_kwargs,
-            open=False # 延迟打开，方便捕获连接错误
-        )
-        
-        # 尝试短暂连接以验证 (502 修复：增加超时)
-        print(f"尝试连接数据库: {settings.database_url.split('@')[-1]}")
+    # 策略：如果有外部传入的 DATABASE_URL (如 Railway)，则尝试连接；
+    # 否则默认使用内存模式，避免在云端因连接 localhost 而导致 502。
+    if settings.database_url_env:
         try:
+            print(f"检测到数据库配置，尝试连接: {settings.database_url.split('@')[-1]}")
+            connection_kwargs = {
+                "autocommit": True,
+                "prepare_threshold": 0,
+            }
+            pool = AsyncConnectionPool(
+                conninfo=settings.database_url,
+                max_size=20,
+                kwargs=connection_kwargs,
+                open=False
+            )
+            
+            # 尝试短暂连接以验证
             await asyncio.wait_for(pool.open(), timeout=2.0)
-        except asyncio.TimeoutError:
-            raise RuntimeError("数据库连接响应超时(2s)")
-        
-        checkpointer = AsyncPostgresSaver(pool)
-        # 自动创建必要的表
-        await asyncio.wait_for(checkpointer.setup(), timeout=3.0)
-        print("✅ 数据库 Checkpointer 初始化成功")
-    except Exception as e:
-        print(f"⚠️ 数据库连接失败, 切换到内存模式: {e}")
-        if pool:
-            await pool.close()
-            pool = None
+            
+            checkpointer = AsyncPostgresSaver(pool)
+            await asyncio.wait_for(checkpointer.setup(), timeout=3.0)
+            print("✅ 数据库 Checkpointer 初始化成功")
+        except Exception as e:
+            print(f"⚠️ 数据库连接失败, 切换到内存模式: {e}")
+            if pool:
+                await pool.close()
+                pool = None
+            checkpointer = MemorySaver()
+    else:
+        print("ℹ️ 未检测到云端数据库配置，默认启用内存模式")
         checkpointer = MemorySaver()
         print("✅ 内存 Checkpointer 初始化成功")
     
