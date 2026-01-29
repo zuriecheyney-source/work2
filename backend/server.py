@@ -74,19 +74,33 @@ async def lifespan(app: FastAPI):
     print("=" * 50)
     
     # 1. 初始化数据库及 Checkpointer
-    connection_kwargs = {
-        "autocommit": True,
-        "prepare_threshold": 0,
-    }
-    pool = AsyncConnectionPool(
-        conninfo=settings.database_url,
-        max_size=20,
-        kwargs=connection_kwargs,
-    )
-    
-    checkpointer = AsyncPostgresSaver(pool)
-    # 自动创建必要的表
-    await checkpointer.setup()
+    try:
+        connection_kwargs = {
+            "autocommit": True,
+            "prepare_threshold": 0,
+        }
+        pool = AsyncConnectionPool(
+            conninfo=settings.database_url,
+            max_size=20,
+            kwargs=connection_kwargs,
+            open=False # 延迟打开，方便捕获连接错误
+        )
+        
+        # 尝试短暂连接以验证
+        print(f"尝试连接数据库: {settings.database_url.split('@')[-1]}")
+        await pool.open()
+        
+        checkpointer = AsyncPostgresSaver(pool)
+        # 自动创建必要的表
+        await checkpointer.setup()
+        print("✅ 数据库 Checkpointer 初始化成功")
+    except Exception as e:
+        print(f"⚠️ 数据库连接失败, 切换到内存模式: {e}")
+        if pool:
+            await pool.close()
+            pool = None
+        checkpointer = MemorySaver()
+        print("✅ 内存 Checkpointer 初始化成功")
     
     # 2. 创建 LangGraph 应用
     app_graph = create_medical_triage_app(checkpointer=checkpointer)
