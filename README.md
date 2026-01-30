@@ -9,6 +9,9 @@
 
 **基于大语言模型 (LLM) 与 LangGraph 的医疗分诊多智能体决策系统**
 
+> [!TIP]
+> **🚀 在线体验地址**: [智能医疗分诊助手 (Streamlit)](https://share.streamlit.io/) *(请在此处填入您的实际部署链接)*
+
 [快速开始](#-快速开始) • [项目结构](#-项目结构) • [技术架构](#-技术架构) • [部署指南](#-部署指南)
 
 </div>
@@ -208,6 +211,10 @@ pip install torch torchvision torchaudio --index-url https://download.pytorch.or
 - `gradient_accumulation_steps: 16`
 - `gradient_checkpointing: true`
 
+### Q4: 部署后访问 502 (Application failed to respond)
+- **检查端口**: 确保代码监听的是 `0.0.0.0:8080`，且云平台外部端口配置一致。
+- **检查探测**: 确保程序定义了根路径 `/` 的响应，Railway 靠此判断服务是否存活。
+
 ---
 
 ## 📝 复现实验结果
@@ -302,12 +309,29 @@ docker-compose up -d
 
 ---
 
-## 📄 License
+---
 
+## ☁️ 云端部署指南 (Cloud Deployment)
+
+本项目已针对云端环境进行深度适配，支持 Railway + Streamlit Cloud 的黄金组合。
+
+### 1. 后端部署 (Railway)
+1.  **代码架构**: 使用 `deployment/Dockerfile.backend` 作为构建入口。
+2.  **健康检查**: 系统默认开启 `/` 和 `/health` 探测，确保网关连接稳定。
+3.  **动态端口**: 必须确保 `PORT` 设置为 `8080`（后端已通过环境变量自动绑定）。
+4.  **数据库自愈**: 自动检测 `DATABASE_URL`，若无配置则自动切换至 `MemorySaver` 模式。
+
+### 2. 前端部署 (Streamlit Cloud)
+1.  **启动文件**: `frontend/app.py`。
+2.  **环境变量**: 在 Secrets 中设置 `BACKEND_URL` 为您的 Railway 公网域名。
+3.  **连接诊断**: 侧边栏自带诊断工具，可实时监控后端存活状态。
+
+---
+
+## 📄 License
 MIT License
 
 ---
 
 ## 👥 贡献者
-
-课程作业项目 - 垂直领域定制化智能体系统
+课程作业项目 - 垂直领域定制化智能体系统 (2026)
