@@ -41,5 +41,8 @@ COPY data/ ./data/
 RUN useradd -m -u 1000 appuser && chown -R appuser:appuser /app
 USER appuser
 
+# 声明端口
+EXPOSE 8080
+
 # 启动命令
 CMD ["python", "-m", "backend.server"]
