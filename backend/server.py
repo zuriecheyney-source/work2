@@ -110,6 +110,10 @@ async def lifespan(app: FastAPI):
     # 2. 创建 LangGraph 应用
     app_graph = create_medical_triage_app(checkpointer=checkpointer)
     
+    print(f"✅ [LIFESPAN] APP 已创建，正在监听端口: {settings.backend_port}")
+    print(f"✅ [LIFESPAN] 根路径访问应返回: 医疗分诊 API 正在运行")
+    print(f"✅ [LIFESPAN] 当前环境变量: {'DATABASE_URL_ENV=True' if settings.database_url_env else 'NONE'}")
+    
     yield
     
     # 关闭时清理
@@ -263,6 +267,7 @@ async def run_triage_task(task_id: str, patient_input: str, patient_id: str = "d
 @app.get("/", tags=["系统"])
 async def root():
     """根路径，用于 Railway 默认健康检查"""
+    print(f"[{datetime.now().isoformat()}] 🛸 收到根路径 (/) 请求")
     return {"message": "医疗分诊 API 正在运行", "status": "healthy"}
 
 
