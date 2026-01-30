@@ -62,8 +62,8 @@ class Settings(BaseSettings):
     redis_password: str = ""
     
     # ===== 服务配置 =====
-    backend_host: str = "0.0.0.0"
-    backend_port: int = Field(default=8000, alias=AliasChoices("PORT", "BACKEND_PORT"))
+    backend_host: str = Field(default="0.0.0.0", alias=AliasChoices("BACKEND_HOST", "HOST"))
+    backend_port: int = Field(default=8080, alias=AliasChoices("PORT", "BACKEND_PORT"))
     frontend_port: int = 8501
     
     @computed_field

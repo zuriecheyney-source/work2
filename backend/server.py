@@ -646,18 +646,19 @@ if __name__ == "__main__":
     import uvicorn
     import os
     
-    # 强制从环境变量读取端口，确保与 Railway 绑定一致
-    port = int(os.getenv("PORT", 8080))
-    host = "0.0.0.0"
+    # 【核心修复】强制从 Railway 环境变量读取 PORT，否则 Gateway 无法通过 80 -> $PORT 的转发
+    current_port = int(os.getenv("PORT", settings.backend_port))
+    current_host = "0.0.0.0"
     
-    print(f"🚀 启动生产级服务器: {host}:{port}")
+    print(f"🚀 [INIT] 生产级服务器启动: {current_host}:{current_port}")
+    print(f"🚀 [INIT] 基准模型: {settings.llm_model}")
     
     uvicorn.run(
         app,
-        host=host,
-        port=port,
-        proxy_headers=True,
-        forwarded_allow_ips="*",
-        access_log=True,
+        host=current_host,
+        port=current_port,
+        proxy_headers=True,      # 必须开启，否则 Railway 代理无法握手
+        forwarded_allow_ips="*", # 必须开启，接受来自 Railway 网关的流量
+        access_log=True,         # 打印访问日志以供诊断
         reload=False
     )
